@@ -21,8 +21,9 @@ C:\Users\David\AeroFS\ecys\tienda
  * La tabla "cliente_historial" tiene demas el campo "prod_id" Y "customerid" pues ya esta incluido en "ordenid".
  * La tabla "cliente_historial" (otra vez) le falta llave forranea "orderlineid".
  * Ningun atributo tiene preferencia respecto a la obligoriedad, almenos se contradiga en un enunciado
+
 ## Preguntas?
-### Les doy mis contactos
+### Les dejo mis contactos
 Escriban una linea al twitter [Twitter] o un correo al dvdyzag@gmail.com
 ## License
 
