@@ -1,34 +1,38 @@
-tienda
+oratienda
 ======
 
-Proyecto 1 del curso Bases de datos 1. Primer Semestre 2013
-## Observaciones
-*Los ficheros que no estan en git son los PDF, el backup "tienda.backup"
-*Ellos estaran resguardados con AeroFS en la Carpeta "ecys\tienda\"
-```
-C:\Users\David\AeroFS\ecys\tienda
-```
-```
-..\..\..\AeroFS\ecys\tienda
-```
-```
-/home/david/AeroFS/ecys/tienda
-```
-```
-../../../AeroFS/ecys/tienda
-```
-## Incoherencias
- * La tabla "cliente_historial" tiene demas el campo "prod_id" Y "customerid" pues ya esta incluido en "ordenid".
- * La tabla "cliente_historial" (otra vez) le falta llave forranea "orderlineid".
- * Ningun atributo tiene preferencia respecto a la obligoriedad, almenos se contradiga en un enunciado
+Proyecto Bases 1 1er Semestre 2013
 
-## Preguntas?
-### Les dejo mis contactos
-Escriban una linea al twitter [Twitter] o un correo al dvdyzag@gmail.com
+## Setup oracle
+Cambiar directorio
+```
+cd C:\Users\David\AeroFS\ecys\U Bases 1\Lab\Proyecto Final
+```
+Ingresar a `sqlplus`:
+```sql
+sqlplus "/nolog"
+```
+Correr el script `dvdyzag.sql`
+```sql
+@dvdyzag.sql
+```
+Correr el script `tablas.sql`
+```sql
+@tablas.sql
+```
+Para eliminar tablas
+```sql
+@notablas.sql
+```
+Conectar a la base datos así:
+```
+sqlplus dvdyzag/f00bar
+```
+
 ## License
 
 ```
-Copyright (C) 2013 David Yzaguirre González
+Copyright (C) 2013 David Yzaguirre Gonzalez
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -42,5 +46,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
-[Twitter]: https://twitter.com/dvdyzag
