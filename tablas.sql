@@ -1,5 +1,5 @@
 CONN dvdyzag/f00bar
-
+CREATE SEQUENCE espac_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE espacios(
 	idespacio VARCHAR(3),
 	descripcion VARCHAR(65),
@@ -15,7 +15,7 @@ CREATE TABLE procesadores(
 	metodo_actualizacion SMALLINT,
 	CONSTRAINT proce_pk_idproce PRIMARY KEY (idprocesador)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE provee_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE proveedores(
 	idproveedor NUMBER,
 	nombre VARCHAR(30),
@@ -24,7 +24,7 @@ CREATE TABLE proveedores(
 	contacto VARCHAR(30),
 	CONSTRAINT provee_pk_idprovee PRIMARY KEY (idproveedor)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE tar_video_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE tarjetas_video(
 	idtarjeta NUMBER,
 	modelo VARCHAR(60),
@@ -40,7 +40,7 @@ CREATE TABLE modelos_placa(
 	version VARCHAR(12),
 	CONSTRAINT mod_plac_pk_idplac PRIMARY KEY (idplaca)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE mod_disc_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE modelos_disco(
 	idmodelo NUMBER,
 	modelo VARCHAR(30),
@@ -53,7 +53,7 @@ CREATE TABLE modelos_disco(
 	pistas_cilindro NUMBER,
 	CONSTRAINT mod_disc_pk_idmod PRIMARY KEY (idmodelo)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE tar_red_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE tarjetas_red(
 	idtarjeta NUMBER,
 	nombre VARCHAR(60),
@@ -61,7 +61,7 @@ CREATE TABLE tarjetas_red(
 	fabricante VARCHAR(40),
 	CONSTRAINT tar_red_pk_idtar PRIMARY KEY (idtarjeta)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE admin_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE administradores(
 	idadministrador NUMBER,
 	nombre VARCHAR(20),
@@ -69,7 +69,7 @@ CREATE TABLE administradores(
 	tipo CHAR(1),
 	CONSTRAINT admin_pk_idadmin PRIMARY KEY (idadministrador)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE asig_admin_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE asignaciones_administradores(
 	idadministrador NUMBER,
 	idespacio VARCHAR(3),
