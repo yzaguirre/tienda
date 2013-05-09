@@ -1,4 +1,5 @@
 CONN dvdyzag/f00bar
+DROP TABLE asignaciones_equipos_discos PURGE;
 DROP TABLE asignaciones_equipos_tarjetas PURGE;
 DROP TABLE equipos PURGE;
 DROP TABLE asignaciones_administradores PURGE;
