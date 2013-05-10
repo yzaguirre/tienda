@@ -20,6 +20,10 @@ Correr el script `tablas.sql`
 ```sql
 @tablas.sql
 ```
+Correr el script `temps.sql`
+```sql
+@temps.sql
+```
 Para eliminar tablas
 ```sql
 @notablas.sql

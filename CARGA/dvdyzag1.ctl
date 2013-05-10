@@ -1,50 +1,29 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-INFILE 'CARGA\ARCHIVO1.txt'
-INTO TABLE proveedores
-()
---
-INTO TABLE equipos
-()
---
-INTO TABLE modelos_placa
-()
---
-INTO TABLE procesadores
-()
---
-INTO TABLE tarjetas_video
-()
-
-OPTIONS (SKIP=1)
-LOAD DATA
-INFILE 'CARGA\ARCHIVO1.txt'
-INTO TABLE tmp_ejemplo
+INFILE 'ARCHIVO1.txt'
+INTO TABLE tabla1
 (
-	id_visita   "seq_tmp_ejemplo.NEXTVAL",
-	codigo      POSITION(1:10)        "replace(:codigo,'-','')",
-	fecha       POSITION(12:21)       ,
-	direccion   POSITION(23:53)       "trim(:direccion)",
-	fecha_visi  POSITION(55:64)       "TO_DATE(:fecha_visi,'DD-MON-YY','NLS_DATE_LANGUAGE=AMERICAN')"
+	proveedor POSITION(1:31) CHAR "trim(replace(translate(lower(:nombre), 'αινσϊ', 'aeiou'),'\"',''))",
+	telefono POSITION(32:40) CHAR,
+	correo POSITION(53:75) CHAR,
+	contacto POSITION(79:93) CHAR "trim(replace(translate(lower(:contacto), 'αινσϊ', 'aeiou'),'\"',''))",
+	-- TABLA
+	-- equipo
+	nombreequipo POSITION(120:136) CHAR,
+	fechaequipo POSITION(161) TERMINATED BY WHITESPACE CHAR,
+	-- TABLA
+	-- modelos_placa
+	tipoplaca POSITION(*:192) CHAR, --fabricante en modelos_placa
+	versionplaca POSITION(*:210) CHAR,
+	fhinventarioequipo POSITION(*) CHAR TERMINATED BY WHITESPACE,-- TIMESTAMP -- fecha_inventario en equipos
+	-- TABLA
+	-- procesadores
+	tipoprocesador POSITION(*) ENCLOSED BY '"' CHAR, -- nombre en procesadores
+	version CHAR, -- esta en el campo de arriba
+	-- TABLA
+	-- tarjetas_video
+	modelotarjetavideo POSITION(*+1) TERMINATED BY "\t" CHAR,-- modelo en tarjetas_video
+	videointegrado POSITION(*) TERMINATED BY "\t" CHAR, -- integrada en tarjetas_video
+	fabricantetarvideo POSITION(*) TERMINATED BY "\t" CHAR, -- fabricante en tarjetas_video
+	webfabricante POSITION(*:494) CHAR -- web en tarjetas_video
 )
---libro
-LOAD DATA
-INFILE 'bookshelf.dat'
-INTO TABLE BOOKSHELF
-(
-	Title POSITION(01:100) CHAR,
-	Publisher POSITION(101:120) CHAR,
-	CategoryName POSITION(121:140) CHAR,
-	Rating POSITION(141:142) CHAR
-)
---auxiliar
-CREATE SEQUENCE seq_tmp_ejemplo START WITH 1 INCREMENT BY 1;
-CREATE TABLE tmp_ejemplo(
-id_visita INT PRIMARY KEY,
-codigo INT NOT NULL,
-fecha DATE NOT NULL,
-direccion VARCHAR(31) NOT NULL,
-fecha_visi DATE NOT NULL
-);
-COMMIT;
-exit;

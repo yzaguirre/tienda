@@ -1,51 +1,50 @@
 -- elimina y crea las 4 tablas temporales
 CONN dvdyzag/f00bar
-DROP TABLE tabla1;
-DROP TABLE tabla2;
-DROP TABLE tabla3;
-DROP TABLE tabla4;
+DROP TABLE tabla1 PURGE;
+DROP TABLE tabla2 PURGE;
+DROP TABLE tabla3 PURGE;
+DROP TABLE tabla4 PURGE;
 CREATE TABLE tabla1(
 	-- TABLA
 	-- proveedores
 	-- idproveedor NUMBER,
-	nombre VARCHAR(30),
+	proveedor VARCHAR(30), -- nombre en proveedores
 	telefono VARCHAR(9),
 	correo VARCHAR(40),
 	contacto VARCHAR(30),
-	
+	--
 	-- TABLA
 	-- equipo
 	--idespacio NUMBER,
 	-- codigo VARCHAR(4),
-	nombre VARCHAR(25),
-	fecha DATE,
+	nombreequipo VARCHAR(25), -- nombre en equipos
+	fechaequipo DATE,
 	-- DADO AQUI idproveedor NUMBER,
 	-- DADO AQUI idplaca VARCHAR(9),
-	fecha_inventario TIMESTAMP,
-	procesador NUMBER,
-	memoria VARCHAR(4),
-	idtarjeta_video NUMBER,
-	
+	fhinventarioequipo TIMESTAMP,-- fecha_inventario en equipos
+	-- DADO AQUI tipoprocesador NUMBER, -- nombre en procesadores
+	-- NULL memoria VARCHAR(4),
+	-- DADO AQUI idtarjeta_video NUMBER,
+	--
 	-- TABLA
 	-- modelos_placa
 	--idplaca VARCHAR(9),
-	fabricante VARCHAR(40),
-	version VARCHAR(12),
-	
+	tipoplaca VARCHAR(40),--fabricante en modelos_placa
+	versionplaca VARCHAR(12),
 	-- TABLA
 	-- procesadores
 	-- idprocesador NUMBER,
-	nombre VARCHAR(40),
+	tipoprocesador VARCHAR(40), -- nombre en procesadores
 	version VARCHAR(20),
 	-- NULL metodo_actualizacion SMALLINT,
-	
+	--
 	-- TABLA
 	-- tarjetas_video
 	-- idtarjeta NUMBER,
-	modelo VARCHAR(60),
-	integrada NUMBER(1),
-	fabricante VARCHAR(40),
-	web VARCHAR(40)
+	modelotarjetavideo VARCHAR(60),-- modelo en tarjetas_video
+	videointegrado NUMBER(1), -- integrada en tarjetas_video
+	fabricantetarvideo VARCHAR(40), -- fabricante en tarjetas_video
+	webfabricante VARCHAR(40) -- web en tarjetas_video
 ) TABLESPACE ECYS_TBSP;
 CREATE TABLE tabla2(
 	-- TABLA
@@ -54,7 +53,7 @@ CREATE TABLE tabla2(
 	descripcion VARCHAR(65),
 	capacidad NUMBER,
 	rango VARCHAR(18),
-	
+	-- 
 	-- TABLA
 	-- administradores
 	-- idadministrador NUMBER,
@@ -67,7 +66,7 @@ CREATE TABLE tabla3(
 	-- equipo
 	-- dado aqui idespacio NUMBER,
 	-- codigo VARCHAR(4),
-	nombre VARCHAR(25),
+	equipo VARCHAR(25), -- nombre en equipos
 	-- fecha DATE,
 	-- idproveedor NUMBER,
 	-- idplaca VARCHAR(9),
@@ -75,36 +74,33 @@ CREATE TABLE tabla3(
 	-- procesador NUMBER,
 	-- memoria VARCHAR(4),
 	-- idtarjeta_video NUMBER,
-	
 	-- espacios
 	--idespacio NUMBER,
-	descripcion VARCHAR(65),
-	capacidad NUMBER,
-	rango VARCHAR(18),
-	
+	espacio VARCHAR(65), -- descripcion en espacios
+	capacidadespacio NUMBER, -- capacidad en espacios
+	rangoespacio VARCHAR(18), -- rango en espacios
 	-- TABLA
 	-- tarjetas_red
 	-- idtarjeta NUMBER,
-	nombre VARCHAR(60),
-	integrado NUMBER(1),
-	fabricante VARCHAR(40),
-	web VARCHAR(50),
-	
+	tarjetared VARCHAR(60), -- nombre en tarjetas_red
+	tarjetaintegrada NUMBER(1), -- integrado en tarjetas_red
+	fabricantetared VARCHAR(40), -- fabricante en tarjetas_red
+	webfabricante VARCHAR(50), -- web en tarjetas_red
 	-- TABLA 
 	-- asignaciones_equipos_tarjetas
 	-- DADO AQUI idespacio NUMBER,
 	-- codigo VARCHAR(4),
 	-- dado aqui idtarjeta NUMBER,
-	ip VARCHAR(18),
+	ipasignada VARCHAR(18), -- ip en asignaciones_equipos_tarjetas
 	mac VARCHAR(18),
 	dhcp NUMBER(1)
 ) TABLESPACE ECYS_TBSP;
 CREATE TABLE tabla4(
 	-- TABLA
-	-- equipo
+	-- equipos
 	-- dado aqui idespacio NUMBER,
 	-- codigo VARCHAR(4),
-	nombre VARCHAR(25),
+	equipo VARCHAR(25), -- nombre en equipos
 	-- fecha DATE,
 	-- idproveedor NUMBER,
 	-- idplaca VARCHAR(9),
@@ -112,32 +108,30 @@ CREATE TABLE tabla4(
 	-- procesador NUMBER,
 	-- memoria VARCHAR(4),
 	-- idtarjeta_video NUMBER,
-	
 	-- TABLA
 	-- espacios
 	-- idespacio NUMBER,
-	descripcion VARCHAR(65),
-	capacidad NUMBER,
-	rango VARCHAR(18),
-	
+	espacio VARCHAR(65), -- descripcion en espacios
+	capacidadespacio NUMBER, -- capacidad en espacios
+	rangoespacio VARCHAR(18), -- rango en espacios
 	-- TABLA
 	-- modelos_disco
 	-- idmodelo NUMBER,
-	modelo VARCHAR(30),
+	modelodisco VARCHAR(30), -- modelo en modelos_disco
 	interfaz VARCHAR(8),
 	tamano NUMBER,
 	bytes_sector NUMBER,
 	sectores_pista NUMBER,
+	cilindros NUMBER,
 	sectores NUMBER,
 	pistas_cilindro NUMBER,
 	cabezas NUMBER,
-	
 	-- TABLA
 	-- asignaciones_equipos_disco
 	-- dado aqui idespacio NUMBER,
-	codigo VARCHAR(4),
-	idmodelo NUMBER,
-	fecha_inventario TIMESTAMP,
+	-- DADO AQUI codigo VARCHAR(4),
+	-- DADO AQUI idmodelo NUMBER,
+	finventarioasignadiscoequipo TIMESTAMP, -- fecha_inventario en asignaciones_equipos_disco
 	fisical_drive NUMBER,
 	particiones NUMBER,
 	idpnp_device VARCHAR(250),

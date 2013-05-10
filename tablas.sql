@@ -48,6 +48,7 @@ CREATE TABLE modelos_disco(
 	tamano NUMBER,
 	bytes_sector NUMBER,
 	sectores_pista NUMBER,
+	cilindros NUMBER,
 	cabezas NUMBER,
 	sectores NUMBER,
 	pistas_cilindro NUMBER,
