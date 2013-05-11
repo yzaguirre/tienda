@@ -4,7 +4,7 @@ INFILE 'ARCHIVO2.dat'
 TRUNCATE
 INTO TABLE tabla2
 (
-	descripcion POSITION(01) CHAR(65) "trim(replace(translate(lower(:descripcion), 'αινσϊ', 'aeiou'),'\"',''))",
+	descripcion POSITION(01) CHAR(65) "trim(replace(translate(lower(:descripcion), 'αινσϊρ', 'aeioun'),'\"'))",
 	capacidad POSITION(82:85) CHAR "trim(replace(replace(:capacidad,'\"'), '\t'))",
 	rango POSITION(93:108) CHAR NULLIF rango=BLANKS "trim(replace(:rango, '\t'))",
 	nombre POSITION(109) CHAR TERMINATED BY "-" "trim(replace(replace(translate(lower(:nombre), 'αινσϊρ', 'aeioun'),'\"'),'\t'))",

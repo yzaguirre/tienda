@@ -18,3 +18,4 @@ DROP SEQUENCE mod_disc_pk_seq;
 DROP SEQUENCE tar_red_pk_seq;
 DROP SEQUENCE admin_pk_seq;
 DROP SEQUENCE asig_admin_pk_seq;
+DROP FUNCTION formatearTimeStamp;
