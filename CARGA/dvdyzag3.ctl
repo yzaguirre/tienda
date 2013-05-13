@@ -23,5 +23,5 @@ INTO TABLE tabla3
 	-- asignaciones_equipos_tarjetas
 	ipasignada CHAR TERMINATED BY '\t' ":ipasignada", -- ip en asignaciones_equipos_tarjetas
 	mac CHAR TERMINATED BY '\t' ":mac",
-	dhcp POSITION(*) CHAR "CASE trim(replace(lower(:dhcp),'\t')) WHEN 'si' THEN 1 ELSE 0 END"
+	dhcp POSITION(*) CHAR(3) "CASE trim(replace(lower(:dhcp),'\t')) WHEN 'si' THEN 1 ELSE 0 END"
 )

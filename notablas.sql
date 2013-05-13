@@ -1,4 +1,3 @@
-CONN dvdyzag/f00bar
 DROP TABLE asignaciones_equipos_discos PURGE;
 DROP TABLE asignaciones_equipos_tarjetas PURGE;
 DROP TABLE equipos PURGE;
@@ -15,7 +14,9 @@ DROP SEQUENCE espac_pk_seq;
 DROP SEQUENCE provee_pk_seq;
 DROP SEQUENCE tar_video_pk_seq;
 DROP SEQUENCE mod_disc_pk_seq;
+DROP SEQUENCE mod_plac_pk_seq;
 DROP SEQUENCE tar_red_pk_seq;
 DROP SEQUENCE admin_pk_seq;
-DROP SEQUENCE asig_admin_pk_seq;
-DROP FUNCTION formatearTimeStamp;
+DROP SEQUENCE equip_pk_seq;
+DROP SEQUENCE proc_pk_seq;
+COMMIT;

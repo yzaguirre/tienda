@@ -1,4 +1,3 @@
-CONN dvdyzag/f00bar
 CREATE SEQUENCE espac_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE espacios(
 	idespacio NUMBER,
@@ -7,7 +6,7 @@ CREATE TABLE espacios(
 	rango VARCHAR(18),
 	CONSTRAINT espac_pk_idespac PRIMARY KEY (idespacio)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE proc_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE procesadores(
 	idprocesador NUMBER,
 	nombre VARCHAR(40),
@@ -33,9 +32,9 @@ CREATE TABLE tarjetas_video(
 	web VARCHAR(40),
 	CONSTRAINT tar_video_pk_idtar PRIMARY KEY (idtarjeta)
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE mod_plac_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE modelos_placa(
-	idplaca VARCHAR(9),
+	idplaca NUMBER,
 	fabricante VARCHAR(40),
 	version VARCHAR(12),
 	CONSTRAINT mod_plac_pk_idplac PRIMARY KEY (idplaca)
@@ -71,24 +70,23 @@ CREATE TABLE administradores(
 	tipo CHAR(1),
 	CONSTRAINT admin_pk_idadmin PRIMARY KEY (idadministrador)
 ) TABLESPACE ECYS_TBSP;
-CREATE SEQUENCE asig_admin_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE asignaciones_administradores(
 	idadministrador NUMBER,
 	idespacio NUMBER,
 	CONSTRAINT asig_admin_fk_admin_id FOREIGN KEY(idadministrador) REFERENCES administradores(idadministrador) ON DELETE CASCADE,
 	CONSTRAINT asig_admin_fk_espac_id FOREIGN KEY(idespacio) REFERENCES espacios(idespacio) ON DELETE CASCADE
 ) TABLESPACE ECYS_TBSP;
-
+CREATE SEQUENCE equip_pk_seq INCREMENT BY 1 START WITH 1;
 CREATE TABLE equipos(
 	idespacio NUMBER,
-	codigo VARCHAR(4),
+	codigo NUMBER,
 	nombre VARCHAR(25),
 	fecha DATE,
 	idproveedor NUMBER,
-	idplaca VARCHAR(9),
+	idplaca NUMBER,
 	fecha_inventario TIMESTAMP,
 	procesador NUMBER,
-	memoria VARCHAR(4),
+	memoria VARCHAR(4) DEFAULT '2GB',
 	idtarjeta_video NUMBER,
 	CONSTRAINT equip_pk_id PRIMARY KEY (idespacio, codigo),
 	CONSTRAINT equip_fk_provee_id FOREIGN KEY (idproveedor) REFERENCES proveedores(idproveedor) ON DELETE CASCADE,
@@ -96,28 +94,28 @@ CREATE TABLE equipos(
 	CONSTRAINT equip_fk_proc_id FOREIGN KEY (procesador) REFERENCES procesadores(idprocesador) ON DELETE CASCADE,
 	CONSTRAINT equip_fk_tar_vid_id FOREIGN KEY (idtarjeta_video) REFERENCES tarjetas_video(idtarjeta) ON DELETE CASCADE
 ) TABLESPACE ECYS_TBSP;
-
 CREATE TABLE asignaciones_equipos_tarjetas(
 	idespacio NUMBER,
-	codigo VARCHAR(4),
+	codigo NUMBER,
 	idtarjeta NUMBER,
 	ip VARCHAR(18),
 	mac VARCHAR(18),
 	dhcp NUMBER(1),
-	CONSTRAINT asig_equip_tar_pk_id PRIMARY KEY (idespacio, codigo, idtarjeta),
+	-- CONSTRAINT asig_equip_tar_pk_id PRIMARY KEY (idespacio, codigo, idtarjeta),
 	CONSTRAINT asig_equip_tar_fk_equip_id FOREIGN KEY (idespacio, codigo) REFERENCES equipos (idespacio, codigo) ON DELETE CASCADE,
 	CONSTRAINT asig_equip_tar_fk_tar_red_id FOREIGN KEY (idtarjeta) REFERENCES tarjetas_red(idtarjeta) ON DELETE CASCADE
 ) TABLESPACE ECYS_TBSP;
 CREATE TABLE asignaciones_equipos_discos(
 	idespacio NUMBER,
-	codigo VARCHAR(4),
+	codigo NUMBER,
 	idmodelo NUMBER,
 	fecha_inventario TIMESTAMP,
 	fisical_drive NUMBER,
 	particiones NUMBER,
 	idpnp_device VARCHAR(250),
 	estado VARCHAR(10),
-	CONSTRAINT asig_equip_disc_pk_id PRIMARY KEY (idespacio, codigo, idtarjeta),
+	-- CONSTRAINT asig_equip_disc_pk_id PRIMARY KEY (idespacio, codigo, idmodelo),
 	CONSTRAINT asig_equip_disc_fk_equip_id FOREIGN KEY (idespacio, codigo) REFERENCES equipos (idespacio, codigo) ON DELETE CASCADE,
 	CONSTRAINT asig_equip_disc_fk_mod_disc_id FOREIGN KEY (idmodelo) REFERENCES modelos_disco(idmodelo) ON DELETE CASCADE
 ) TABLESPACE ECYS_TBSP;
+COMMIT;

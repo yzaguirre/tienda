@@ -1,5 +1,4 @@
 -- elimina y crea las 4 tablas temporales
-CONN dvdyzag/f00bar
 DROP TABLE tabla1 PURGE;
 DROP TABLE tabla2 PURGE;
 DROP TABLE tabla3 PURGE;
@@ -74,6 +73,7 @@ CREATE TABLE tabla3(
 	-- procesador NUMBER,
 	-- memoria VARCHAR(4),
 	-- idtarjeta_video NUMBER,
+	-- TABLA
 	-- espacios
 	--idespacio NUMBER,
 	espacio VARCHAR(65), -- descripcion en espacios
@@ -137,3 +137,4 @@ CREATE TABLE tabla4(
 	idpnp_device VARCHAR(250),
 	estado VARCHAR(10)
 ) TABLESPACE ECYS_TBSP;
+COMMIT;
