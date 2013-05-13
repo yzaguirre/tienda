@@ -15,7 +15,5 @@ Get-Content notablas.sql | sqlplus dvdyzag/f00bar
 Get-Content tablas.sql | sqlplus dvdyzag/f00bar
 
 # Get-Content funciones.sql | sqlplus dvdyzag/f00bar # SOLO PRUEBAS
-Get-Content pl1.sql | sqlplus dvdyzag/f00bar
-Get-Content pl2.sql | sqlplus dvdyzag/f00bar
-Get-Content pl3.sql | sqlplus dvdyzag/f00bar
-Get-Content pl4.sql | sqlplus dvdyzag/f00bar
+Get-Content redistribucion.sql | sqlplus dvdyzag/f00bar
+# cd CONSULTAS
