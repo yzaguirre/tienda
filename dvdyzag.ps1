@@ -16,4 +16,5 @@ Get-Content tablas.sql | sqlplus dvdyzag/f00bar
 
 # Get-Content funciones.sql | sqlplus dvdyzag/f00bar # SOLO PRUEBAS
 Get-Content redistribucion.sql | sqlplus dvdyzag/f00bar
+
 # cd CONSULTAS

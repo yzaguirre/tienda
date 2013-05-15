@@ -1,4 +1,5 @@
 -- probar carga 1
+select count(*) from tabla1;
 
 -- probar carga 2
 select count(*) from tabla2;
