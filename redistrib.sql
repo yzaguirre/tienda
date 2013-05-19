@@ -1,14 +1,50 @@
+-- llenar tablas: equipos, espacios, tarjetas_red, asignaciones_equipos_tarjetas
 -- llenar tablas: proveedores, equipos, modelos_placa, procesadores, tarjetas_video
-CREATE OR REPLACE PROCEDURE p_tabla1 IS
+CREATE OR REPLACE PROCEDURE p_tabla3y1 IS
 	xidproveedor NUMBER(14);
-	xcodigo NUMBER(14);
 	xidprocesador NUMBER(14);
-	xidtarjeta NUMBER(14);
 	xidplaca NUMBER(14);
-	CURSOR t1_cursor IS SELECT * FROM tabla1;
+	xcodigo NUMBER(14);
+	xidespacio NUMBER(14);
+	xidtarjeta NUMBER(14);
+	CURSOR t3_cursor IS SELECT * FROM tabla3 WHERE tarjetared NOT LIKE '%broadcom%'  ORDER BY equipo, tarjetared;
+	CURSOR t1_cursor IS SELECT * FROM tabla1 ORDER BY nombreequipo;
+	t3_val t3_cursor%ROWTYPE;
+	t1_val t1_cursor%ROWTYPE;
 	found boolean := false;-- para encontrar ids ya existentes
 BEGIN
-	for t1_val IN t1_cursor LOOP
+	OPEN t3_cursor;
+	OPEN t1_cursor;
+	LOOP
+		FETCH t3_cursor INTO t3_val;
+		FETCH t1_cursor INTO t1_val;
+		EXIT WHEN t3_cursor%NOTFOUND;
+		-- primero ocuparse de la tabla 3
+		-- buscar id de espacios
+		found:=false;
+		FOR x in (select idespacio from espacios where descripcion=t3_val.espacio and rango=t3_val.rangoespacio and rownum=1) LOOP
+			found:=true;
+			xidespacio:= x.idespacio;
+		END LOOP;
+		IF not found THEN
+			xidespacio:= espac_pk_seq.NEXTVAL;
+			insert into espacios VALUES(xidespacio, t3_val.espacio, t3_val.capacidadespacio, t3_val.rangoespacio);
+		END IF;
+		-- buscar id de equipo
+		xcodigo:= equip_pk_seq.NEXTVAL;
+		insert into equipos(idespacio, codigo, nombre) VALUES(xidespacio, xcodigo, t3_val.equipo);
+		-- buscar id de tarjetas_red
+		found:=false;
+		FOR x in (select idtarjeta from tarjetas_red where nombre=t3_val.tarjetared and rownum=1) LOOP
+			found:=true;
+			xidtarjeta:= x.idtarjeta;
+		END LOOP;
+		IF not found THEN
+			xidtarjeta:= tar_red_pk_seq.NEXTVAL;
+			insert into tarjetas_red VALUES(xidtarjeta, t3_val.tarjetared, t3_val.tarjetaintegrada, t3_val.fabricantetared, t3_val.webfabricante);
+		END IF;
+		insert into asignaciones_equipos_tarjetas values (xidespacio, xcodigo, xidtarjeta, t3_val.ipasignada, t3_val.mac, t3_val.dhcp);
+		-- ahora a ocuparse de la tabla 1
 		-- buscar id de proveedores
 		found:=false;
 		FOR x in (select idproveedor from proveedores where nombre=t1_val.proveedor and rownum=1) LOOP
@@ -49,13 +85,46 @@ BEGIN
 			xidtarjeta:= tar_video_pk_seq.NEXTVAL;
 			insert into tarjetas_video VALUES(xidtarjeta, t1_val.modelotarjetavideo, t1_val.videointegrado, t1_val.fabricantetarvideo, t1_val.webfabricante);
 		END IF;
-		-- buscar id de equipo
-		select codigo into xcodigo from equipos where nombre=t1_val.nombreequipo and rownum=1;
 		update equipos SET fecha = t1_val.fechaequipo, idproveedor = xidproveedor, idplaca = xidplaca, fecha_inventario = t1_val.fhinventarioequipo, procesador = xidprocesador, idtarjeta_video = xidtarjeta WHERE codigo = xcodigo;
 		COMMIT;
 	END LOOP;
+	CLOSE t3_cursor;
+	CLOSE t1_cursor;
+	COMMIT;
 END;
 /
+-- complementar tabla asignaciones_equipos_tarjetas de ARCHIVO3.dat
+CREATE OR REPLACE PROCEDURE p_tabla3cont IS
+	CURSOR t3_cursor IS SELECT * FROM tabla3 WHERE tarjetared LIKE '%broadcom%';
+	CURSOR equipos_cursor IS SELECT idespacio, codigo FROM equipos WHERE nombre LIKE '%dell%';
+	t3_val t3_cursor%ROWTYPE;
+	equipos_val equipos_cursor%ROWTYPE;
+	xidtarjeta NUMBER(14);
+	found boolean := false;-- para encontrar ids ya existentes
+BEGIN
+	OPEN t3_cursor;
+	OPEN equipos_cursor;
+	LOOP
+		FETCH t3_cursor INTO t3_val;
+		FETCH equipos_cursor INTO equipos_val;	
+		EXIT WHEN t3_cursor%NOTFOUND;
+		-- buscar id de tarjetas_red
+		found:=false;
+		FOR x in (select idtarjeta from tarjetas_red where nombre=t3_val.tarjetared and rownum=1) LOOP
+			found:=true;
+			xidtarjeta:= x.idtarjeta;
+			END LOOP;
+			IF not found THEN
+				xidtarjeta:= tar_red_pk_seq.NEXTVAL;
+				insert into tarjetas_red VALUES(xidtarjeta, t3_val.tarjetared, t3_val.tarjetaintegrada, t3_val.fabricantetared, t3_val.webfabricante);
+			END IF;
+			insert into asignaciones_equipos_tarjetas values (equipos_val.idespacio, equipos_val.codigo, xidtarjeta, t3_val.ipasignada, t3_val.mac, t3_val.dhcp);
+	END LOOP;
+	CLOSE t3_cursor;
+	CLOSE equipos_cursor;
+END;
+/
+show errors
 -- llenar tablas: administradores, espacios, asignaciones_administradores
 CREATE OR REPLACE PROCEDURE p_tabla2 IS
 	xidadministrador NUMBER(14);
@@ -90,56 +159,12 @@ BEGIN
 	END LOOP;
 END;
 /
--- llenar tablas: equipos, espacios, tarjetas_red, asignaciones_equipos_tarjetas
-CREATE OR REPLACE PROCEDURE p_tabla3 IS
-	xcodigo NUMBER(14);
-	xidespacio NUMBER(14);
-	xidtarjeta NUMBER(14);
-	CURSOR t3_cursor IS SELECT * FROM tabla3;
-	found boolean := false;-- para encontrar ids ya existentes
-BEGIN
-	for t3_val IN t3_cursor LOOP
-		-- buscar id de espacios
-		found:=false;
-		FOR x in (select idespacio from espacios where descripcion=t3_val.espacio and rango=t3_val.rangoespacio and rownum=1) LOOP
-			found:=true;
-			xidespacio:= x.idespacio;
-		END LOOP;
-		IF not found THEN
-			xidespacio:= espac_pk_seq.NEXTVAL;
-			insert into espacios VALUES(xidespacio, t3_val.espacio, t3_val.capacidadespacio, t3_val.rangoespacio);
-		END IF;
-		-- buscar id de equipo
-		found:=false;
-		FOR x in (select codigo from equipos where idespacio=xidespacio and nombre=t3_val.equipo and rownum=1) LOOP
-			found:=true;
-			xcodigo:= x.codigo;
-		END LOOP;
-		IF not found THEN
-			xcodigo:= equip_pk_seq.NEXTVAL;
-			insert into equipos(idespacio, codigo, nombre) VALUES(xidespacio, xcodigo, t3_val.equipo);
-		END IF;
-		-- buscar id de tarjetas_red
-		found:=false;
-		FOR x in (select idtarjeta from tarjetas_red where nombre=t3_val.tarjetared and rownum=1) LOOP
-			found:=true;
-			xidtarjeta:= x.idtarjeta;
-		END LOOP;
-		IF not found THEN
-			xidtarjeta:= tar_red_pk_seq.NEXTVAL;
-			insert into tarjetas_red VALUES(xidtarjeta, t3_val.tarjetared, t3_val.tarjetaintegrada, t3_val.fabricantetared, t3_val.webfabricante);
-		END IF;
-		insert into asignaciones_equipos_tarjetas values (xidespacio, xcodigo, xidtarjeta, t3_val.ipasignada, t3_val.mac, t3_val.dhcp);
-		COMMIT;
-	END LOOP;
-END;
-/
 -- llenar tablas: equipos, espacios, modelos_disco, asignaciones_equipos_disco
 CREATE OR REPLACE PROCEDURE p_tabla4 IS
 	xcodigo NUMBER(14);
 	xidespacio NUMBER(14);
 	xidmodelo NUMBER(14);
-	CURSOR t4_curso IS SELECT * FROM tabla4;
+	CURSOR t4_curso IS SELECT * FROM tabla4 order by equipo;
 	found boolean := false;-- para encontrar ids ya existentes
 BEGIN
 	for t4_val IN t4_curso LOOP
@@ -179,8 +204,7 @@ BEGIN
 END;
 /
 execute p_tabla2();
-execute p_tabla3();
+execute p_tabla3y1();
+execute p_tabla3cont();
 execute p_tabla4();
--- de ultimo llamar cargar la tabla temporal 4
-execute p_tabla1(); 
 show errors
